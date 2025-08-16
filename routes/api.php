@@ -27,6 +27,28 @@ Route::prefix('categories')->group(function () {
 
     // Reorder categories
     Route::post('reorder', [MenuCategoryController::class, 'reorder']);
+    
+    // Upload image
+    Route::post('upload-image', [MenuCategoryController::class, 'uploadImage']);
+    
+    // Test endpoint for debugging
+    Route::post('test-reorder', function(Illuminate\Http\Request $request) {
+        try {
+            $orderedIds = $request->input('ordered_ids', []);
+            
+            // Test basic response
+            return response()->json([
+                'message' => 'Test endpoint working',
+                'received_ids' => $orderedIds,
+                'count' => count($orderedIds)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
+        }
+    });
 });
 
 
